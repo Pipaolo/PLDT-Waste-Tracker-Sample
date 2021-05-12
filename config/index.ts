@@ -1,5 +1,5 @@
 // TODO: Change the hostname to whatever hosting
 export const hostname =
   process.env.NODE_ENV === "production"
-    ? "http://localhost:3000"
+    ? "https://pldt-waste-tracker.vercel.app/"
     : "http://localhost:3000";

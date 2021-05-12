@@ -25,6 +25,7 @@ const userHandler: NextApiHandler = async (
     res.status(200).json({
       data: userDocument.toJSON(),
     });
+    return;
   } catch (error) {
     res.status(400).json({
       error: {
