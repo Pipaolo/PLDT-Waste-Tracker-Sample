@@ -1,12 +1,10 @@
-import { assert } from "console";
 import type { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "../../middleware/mongodb";
 import WasteModel from "../../models/waste";
 import { APIError } from "../../types/api_error";
 import { APIResponse } from "../../types/api_response";
+import { generalizePhoneNumber } from "../../utils/converters";
 import { philippineNumberRegex } from "../../utils/validators";
-
-const phoneNumberRegexReplace = RegExp("^(\\+63|0)");
 
 type WasteData = {
   batteries: number;
@@ -54,12 +52,11 @@ const createWaste = async (
 
       // Remove the prefixes from the phone number to ensure
       // that there are no number duplication
-      const filteredPhoneNumber =
-        "0" + phoneNumber.replace(phoneNumberRegexReplace, "");
+      const generalizedPhoneNumber = generalizePhoneNumber(phoneNumber);
 
       // Start Checking if there is an existing document
       const existingWasteDocument = await WasteModel.findOne({
-        phoneNumber: filteredPhoneNumber,
+        phoneNumber: generalizedPhoneNumber,
       }).exec();
 
       if (existingWasteDocument) {
@@ -125,8 +122,7 @@ const getWastes = async (
 
       // Remove the prefixes from the phone number to ensure
       // that there are no number duplication
-      const filteredPhoneNumber =
-        "0" + phoneNumber.toString().replace(phoneNumberRegexReplace, "");
+      const filteredPhoneNumber = generalizePhoneNumber(phoneNumber.toString());
 
       // Start Fetching the user's Waste Data
       const documents = await WasteModel.find({

@@ -3,22 +3,24 @@ import { HTTPMethods } from "../../../consts/http_methods";
 import connectDB from "../../../middleware/mongodb";
 import { APIResponse } from "../../../types/api_response";
 import UserModel from "../../../models/user";
+import { generalizePhoneNumber } from "../../../utils/converters";
 
 const registerHandler: NextApiHandler = async (
   req,
   res: NextApiResponse<APIResponse>
 ) => {
   if (req.method == HTTPMethods.Post) {
-    const { username, pin, phoneNumber, name, points } = JSON.parse(req.body);
+    const { pin, phoneNumber, name, points } = JSON.parse(req.body);
     try {
-      if (username && pin && phoneNumber && name) {
+      console.log(req.body);
+      if (pin && phoneNumber && name) {
         const userDocument = await UserModel.create({
-          username,
           pin,
-          phoneNumber,
+          phoneNumber: generalizePhoneNumber(phoneNumber),
           name,
           points,
         });
+
         const response: APIResponse = {
           data: userDocument.toJSON(),
         };

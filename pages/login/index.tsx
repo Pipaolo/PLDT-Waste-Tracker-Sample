@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { redirect } from "next/dist/next-server/server/api-utils";
 
 type LoginInput = {
-  username: string;
+  phoneNumber: string;
   pin: number;
 };
 
@@ -30,12 +30,11 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    loginState.login(data.username, data.pin.toString());
+    loginState.login(data.phoneNumber, data.pin.toString());
   };
 
   useEffect(() => {
     if (loginState.error) {
-      console.log("error");
       toast(loginState.error, {
         autoClose: 2000,
         bodyClassName: "text-red-500",
@@ -88,16 +87,18 @@ const LoginPage = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col justify-center h-full w-full gap-4"
           >
-            <Logo
-              className="self-center w-1/2"
-              onClick={() => router.push("/")}
-            ></Logo>
+            <div className="w-full">
+              <Logo
+                className="object-contain self-center w-1/2"
+                onClick={() => router.push("/")}
+              ></Logo>
+            </div>
             <InputField
-              id="username"
-              label="Username"
+              id="phoneNumber"
+              label="Phone Number"
               type="text"
-              register={register("username")}
-              error={errors.username}
+              register={register("phoneNumber")}
+              error={errors.phoneNumber}
             ></InputField>
             <InputField
               id="pin"
@@ -113,7 +114,9 @@ const LoginPage = () => {
           </form>
         </div>
       </main>
-      <footer>Insert Footer</footer>
+      <footer className="w-full flex justify-center items-center text-sm font-semibold italic opacity-50">
+        Powered by GS Solutions
+      </footer>
     </div>
   );
 };

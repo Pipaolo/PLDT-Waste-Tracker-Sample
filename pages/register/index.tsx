@@ -12,9 +12,8 @@ import { useRegisterStore } from "../../stores/registerStore";
 import { useEffect } from "react";
 
 type RegisterInput = {
-  username: string;
-  pin: number;
   phoneNumber: string;
+  pin: number;
   name: string;
 };
 
@@ -97,23 +96,18 @@ const RegisterPage = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col justify-center h-full w-full gap-4"
           >
-            <Logo
-              className="self-center w-1/2"
-              onClick={() => router.push("/")}
-            ></Logo>
+            <div className="w-full">
+              <Logo
+                className="object-contain self-center w-1/2"
+                onClick={() => router.push("/")}
+              ></Logo>
+            </div>
             <InputField
               id="name"
               label="Name"
               type="text"
               register={register("name")}
               error={errors.name}
-            ></InputField>
-            <InputField
-              id="username"
-              label="Username"
-              register={register("username")}
-              type="text"
-              error={errors.username}
             ></InputField>
             <InputField
               id="phoneNumber"
@@ -134,7 +128,9 @@ const RegisterPage = () => {
           </form>
         </div>
       </main>
-      <footer>Insert Footer</footer>
+      <footer className="w-full flex justify-center items-center text-sm font-semibold italic opacity-50">
+        Powered by GS Solutions
+      </footer>
     </div>
   );
 };

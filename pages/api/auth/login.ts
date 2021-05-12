@@ -3,6 +3,7 @@ import connectDB from "../../../middleware/mongodb";
 import { APIResponse } from "../../../types/api_response";
 import UserModel from "../../../models/user";
 import { HTTPMethods } from "../../../consts/http_methods";
+import { generalizePhoneNumber } from "../../../utils/converters";
 
 const loginHandler: NextApiHandler = async (
   req,
@@ -10,10 +11,11 @@ const loginHandler: NextApiHandler = async (
 ) => {
   if (req.method == HTTPMethods.Patch) {
     try {
-      const { username, pin } = JSON.parse(req.body);
-      if (username && pin) {
+      const { phoneNumber, pin } = JSON.parse(req.body);
+
+      if (phoneNumber && pin) {
         const userDocument = await UserModel.findOne({
-          username,
+          phoneNumber: generalizePhoneNumber(phoneNumber),
           pin,
         });
 

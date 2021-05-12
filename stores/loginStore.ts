@@ -4,20 +4,20 @@ interface LoginState {
   isLoading: boolean;
   success?: Object;
   error?: Object;
-  login: (username: string, pin: string) => void;
+  login: (phoneNumber: string, pin: string) => void;
 }
 
 export const useLoginStore = create<LoginState>((set) => ({
   isLoading: false,
   success: false,
   error: null,
-  login: async (username, pin) => {
+  login: async (phoneNumber, pin) => {
     try {
       set({ isLoading: true, error: null, success: null });
       const response = await fetch("/api/auth/login", {
         method: "PATCH",
         body: JSON.stringify({
-          username,
+          phoneNumber,
           pin,
         }),
       });

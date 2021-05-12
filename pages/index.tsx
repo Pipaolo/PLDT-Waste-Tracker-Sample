@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { MainButton } from "../shared_components";
+import { MainButton, Logo } from "../shared_components";
 export default function Home() {
   const router = useRouter();
   const handleOnGetStartedPressed = () => {
@@ -16,21 +16,23 @@ export default function Home() {
       <main className="flex-1 flex items-center justify-center">
         <div className="bg-white rounded-lg elevation-12 p-8 border-1 border-pldt-red ">
           <div className="flex flex-col items-center justify-center h-full">
-            <img
-              src="https://my.pldthome.com/Assets/images/header/default/logo.png"
-              alt="PLDT Logo"
-            />
-            <div className="text-2xl font-bold text-black text-center">
+            <div className="w-full">
+              <Logo
+                onClick={() => router.push("/")}
+                className="object-contain"
+              />
+            </div>
+            <div className="mt-12 text-2xl font-bold text-black text-center">
               PLDT Smart Waste Points Tracker!
             </div>
             <div className="text-sm text-black">
               Keep track of your points at the comfort of your home
             </div>
-            <div className="mt-8 flex flex-col items-center justify-center">
+            <div className="mt-12 flex flex-col items-center justify-center space-y-2">
               <MainButton onClick={handleOnGetStartedPressed}>
                 <span className="text-white font-bold">Get Started</span>
               </MainButton>
-              <div className="mt-4 text-center">
+              <div className="text-center">
                 <span className="text-sm">Already have an account? </span>
                 <a
                   href="/login"
@@ -43,7 +45,9 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer>Insert Footer</footer>
+      <footer className="w-full flex justify-center items-center text-sm font-semibold italic opacity-50">
+        Powered by GS Solutions
+      </footer>
     </div>
   );
 }
