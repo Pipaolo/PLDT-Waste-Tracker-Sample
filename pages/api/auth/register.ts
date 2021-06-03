@@ -10,12 +10,11 @@ const registerHandler: NextApiHandler = async (
   res: NextApiResponse<APIResponse>
 ) => {
   if (req.method == HTTPMethods.Post) {
-    const { pin, phoneNumber, name, points } = JSON.parse(req.body);
+    const { password, phoneNumber, name, points } = JSON.parse(req.body);
     try {
-      console.log(req.body);
-      if (pin && phoneNumber && name) {
+      if (password && phoneNumber && name) {
         const userDocument = await UserModel.create({
-          pin,
+          password,
           phoneNumber: generalizePhoneNumber(phoneNumber),
           name,
           points,

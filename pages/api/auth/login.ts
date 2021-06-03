@@ -11,18 +11,19 @@ const loginHandler: NextApiHandler = async (
 ) => {
   if (req.method == HTTPMethods.Patch) {
     try {
-      const { phoneNumber, pin } = JSON.parse(req.body);
+      const { phoneNumber, password } = JSON.parse(req.body);
+      console.log(req.body);
 
-      if (phoneNumber && pin) {
+      if (phoneNumber && password) {
         const userDocument = await UserModel.findOne({
           phoneNumber: generalizePhoneNumber(phoneNumber),
-          pin,
+          password,
         });
 
         if (!userDocument) {
           res.status(200).json({
             error: {
-              message: "Invalid Username/Pin",
+              message: "Invalid Username/Password",
               statusCode: 400,
             },
           });

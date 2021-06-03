@@ -2,14 +2,14 @@ import { Schema, Document, model, models } from "mongoose";
 
 export interface IUser extends Document {
   username: string;
-  pin: string;
+  password: string;
   phoneNumber: string;
   name: string;
   points: number;
 }
 
 const UserSchema: Schema = new Schema<IUser>({
-  pin: {
+  password: {
     type: String,
     required: true,
   },
@@ -30,7 +30,7 @@ const UserSchema: Schema = new Schema<IUser>({
 
 UserSchema.post("save", (error, res, next) => {
   if (error.name === "MongoError" && error.code === 11000) {
-    next(new Error("Existing User!"));
+    next(new Error("A User already registered with that number."));
   } else {
     next();
   }

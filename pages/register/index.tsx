@@ -13,7 +13,7 @@ import { useEffect } from "react";
 
 type RegisterInput = {
   phoneNumber: string;
-  pin: number;
+  password: string;
   name: string;
 };
 
@@ -61,13 +61,13 @@ const RegisterPage = () => {
   const buildLoading = () => {
     if (registerState.isLoading) {
       return (
-        <div className="w-full flex justify-center">
+        <div className="flex justify-center w-full">
           <Loader type="TailSpin" color="#E72D2F" height={40} width={40} />
         </div>
       );
     }
     return (
-      <div className="w-full flex flex-col">
+      <div className="flex flex-col w-full">
         <OutlineButton classNames="mt-4" onClick={() => handleSubmit(onSubmit)}>
           <span className="text-center">Register</span>
         </OutlineButton>
@@ -75,7 +75,7 @@ const RegisterPage = () => {
           <span className="text-sm">Already have an account? </span>
           <a
             href="/login"
-            className="hover:underline transition duration-300 text-sm text-blue-500"
+            className="text-sm text-blue-500 transition duration-300 hover:underline"
           >
             Click Here to Login
           </a>
@@ -90,15 +90,15 @@ const RegisterPage = () => {
         <title>Register</title>
       </Head>
       <header></header>
-      <main className="flex-1 flex items-center justify-center">
-        <div className="bg-white rounded-lg elevation-12 p-8 border-1 border-pldt-red w-full max-w-md ">
+      <main className="flex items-center justify-center flex-1">
+        <div className="w-full max-w-md p-8 bg-white rounded-lg elevation-12 border-1 border-pldt-red ">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col justify-center h-full w-full gap-4"
+            className="flex flex-col justify-center w-full h-full gap-4"
           >
             <div className="w-full">
               <Logo
-                className="object-contain self-center w-1/2"
+                className="self-center object-contain w-1/2"
                 onClick={() => router.push("/")}
               ></Logo>
             </div>
@@ -113,22 +113,22 @@ const RegisterPage = () => {
               id="phoneNumber"
               label="Phone Number"
               register={register("phoneNumber")}
-              type="text"
+              type="tel"
               error={errors.phoneNumber}
             ></InputField>
             <InputField
               id="pin"
-              label="Pin"
-              register={register("pin")}
+              label="Password"
+              register={register("password")}
               type="password"
-              error={errors.pin}
+              error={errors.password}
             ></InputField>
 
             {buildLoading()}
           </form>
         </div>
       </main>
-      <footer className="w-full flex justify-center items-center text-sm font-semibold italic opacity-50">
+      <footer className="flex items-center justify-center w-full text-sm italic font-semibold opacity-50">
         Powered by GS Solutions
       </footer>
     </div>
