@@ -1,3 +1,4 @@
+import axios from "axios";
 import create from "zustand";
 
 interface LoginState {
@@ -14,15 +15,12 @@ export const useLoginStore = create<LoginState>((set) => ({
   login: async (phoneNumber, password) => {
     try {
       set({ isLoading: true, error: null, success: null });
-      const response = await fetch("/api/auth/login", {
-        method: "PATCH",
-        body: JSON.stringify({
-          phoneNumber,
-          password,
-        }),
+      const response = await axios.patch("/api/auth/login", {
+        phoneNumber,
+        password,
       });
 
-      const responseData = await response.json();
+      const responseData = await response.data;
 
       if (responseData.error) {
         set({

@@ -1,10 +1,11 @@
+import axios from "axios";
 import create from "zustand";
 
 interface RegisterState {
   isLoading: boolean;
   success?: boolean;
   error?: Object;
-  register: (data: string) => void;
+  register: (data: Object) => void;
 }
 
 export const useRegisterStore = create<RegisterState>((set) => ({
@@ -18,12 +19,9 @@ export const useRegisterStore = create<RegisterState>((set) => ({
       success: false,
     });
 
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      body: data,
-    });
+    const response = await axios.post("/api/auth/register", data);
 
-    const responseData = await response.json();
+    const responseData = await response.data;
     console.log(responseData);
     if (responseData.error) {
       set({

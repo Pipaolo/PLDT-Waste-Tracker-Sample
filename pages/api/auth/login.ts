@@ -11,23 +11,25 @@ const loginHandler: NextApiHandler = async (
 ) => {
   if (req.method == HTTPMethods.Patch) {
     try {
-      const { phoneNumber, password } = JSON.parse(req.body);
-      console.log(req.body);
+      const { phoneNumber, password } = req.body;
 
       if (phoneNumber && password) {
         const userDocument = await UserModel.findOne({
           phoneNumber: generalizePhoneNumber(phoneNumber),
-          password,
         });
 
         if (!userDocument) {
-          res.status(200).json({
-            error: {
-              message: "Invalid Username/Password",
-              statusCode: 400,
-            },
+          throw Error("Invalid Username/Password");
+        }
+
+        const [err, isMatch] = await new Promise((res, rej) => {
+          userDocument.comparePassword(password, (err, isMatch) => {
+            return res([err, isMatch]);
           });
-          return;
+        });
+
+        if (!isMatch) {
+          throw Error("Invalid Username/Password");
         }
 
         res.status(200).json({

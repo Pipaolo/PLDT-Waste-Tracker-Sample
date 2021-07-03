@@ -1,10 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "../../middleware/mongodb";
 import WasteModel from "../../models/waste";
+import UserModel from "../../models/user";
 import { APIError } from "../../types/api_error";
 import { APIResponse } from "../../types/api_response";
 import { generalizePhoneNumber } from "../../utils/converters";
 import { philippineNumberRegex } from "../../utils/validators";
+import WasteTransactionModel from "../../models/waste_transaction";
 
 type WasteData = {
   batteries: number;
@@ -54,32 +56,51 @@ const createWaste = async (
       // that there are no number duplication
       const generalizedPhoneNumber = generalizePhoneNumber(phoneNumber);
 
-      // Start Checking if there is an existing document
-      const existingWasteDocument = await WasteModel.findOne({
+      const userDocument = await UserModel.findOne({
         phoneNumber: generalizedPhoneNumber,
-      }).exec();
+      });
 
-      if (existingWasteDocument) {
-        existingWasteDocument.batteries = batteries;
-        existingWasteDocument.chargers = chargers;
-        existingWasteDocument.phones = phones;
-        existingWasteDocument.save();
-
-        res.status(200).json({
-          data: existingWasteDocument.toJSON(),
-        });
-        return;
+      if (!userDocument) {
+        throw Error("There are no existing user with that number..");
       }
 
-      const document = await WasteModel.create({
+      let wasteDocument = await WasteModel.findOne({
+        phoneNumber: generalizedPhoneNumber,
+      });
+
+      if (wasteDocument) {
+        // Start updating the document
+        wasteDocument.batteries += batteries;
+        wasteDocument.chargers += chargers;
+        wasteDocument.phones += phones;
+
+        await wasteDocument.save();
+      } else {
+        // Create a brand new Waste Document
+        wasteDocument = await WasteModel.create({
+          batteries,
+          chargers,
+          phones,
+          phoneNumber: generalizedPhoneNumber,
+        });
+      }
+
+      // Store the transaction
+      await WasteTransactionModel.create({
         batteries,
         chargers,
         phones,
-        phoneNumber,
+        phoneNumber: generalizedPhoneNumber,
       });
 
+      // Update the User's points
+      userDocument.points +=
+        wasteDocument.batteries + wasteDocument.chargers + wasteDocument.phones;
+
+      await userDocument.save();
+
       res.status(200).json({
-        data: document.toJSON(),
+        data: wasteDocument.toObject(),
       });
       return;
     }
@@ -107,7 +128,6 @@ const getWastes = async (
   try {
     const { phoneNumber } = req.query;
 
-    let wastes = [];
     if (phoneNumber) {
       // Check if the received phone number is valid
       if (!philippineNumberRegex.test(phoneNumber.toString())) {
@@ -122,26 +142,42 @@ const getWastes = async (
 
       // Remove the prefixes from the phone number to ensure
       // that there are no number duplication
-      const filteredPhoneNumber = generalizePhoneNumber(phoneNumber.toString());
+      const generalizedPhoneNumber = generalizePhoneNumber(
+        phoneNumber.toString()
+      );
 
-      // Start Fetching the user's Waste Data
-      const documents = await WasteModel.find({
-        phoneNumber: filteredPhoneNumber,
-      }).exec();
+      // Search for an existing waste documetn
+      const waste = await WasteModel.findOne({
+        phoneNumber: generalizedPhoneNumber,
+      }).lean();
+
+      const wasteTransactions = await WasteTransactionModel.find(
+        {
+          phoneNumber: generalizedPhoneNumber,
+        },
+        null,
+        {
+          sort: {
+            createdAt: -1,
+          },
+        }
+      ).lean();
+
+      const data = {
+        waste: waste,
+        transactions: wasteTransactions,
+      };
 
       // Convert all the documents into json
-      wastes = documents.map((d) => d.toJSON());
-
       res.status(200).json({
-        data: wastes,
+        data,
       });
 
       return;
     }
 
     // Fetch all the wastes data if there are no phone query parameter
-    const documents = await WasteModel.find().exec();
-    wastes = documents.map((d) => d.toJSON());
+    const wastes = await WasteModel.find().lean();
 
     res.status(200).json({
       data: wastes,

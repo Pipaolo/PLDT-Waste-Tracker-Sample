@@ -3,6 +3,7 @@ import { HTTPMethods } from "../../../consts/http_methods";
 import connectDB from "../../../middleware/mongodb";
 import { APIResponse } from "../../../types/api_response";
 import UserModel from "../../../models/user";
+import WasteModel from "../../../models/waste";
 import { generalizePhoneNumber } from "../../../utils/converters";
 
 const registerHandler: NextApiHandler = async (
@@ -10,7 +11,7 @@ const registerHandler: NextApiHandler = async (
   res: NextApiResponse<APIResponse>
 ) => {
   if (req.method == HTTPMethods.Post) {
-    const { password, phoneNumber, name, points } = JSON.parse(req.body);
+    const { password, phoneNumber, name, points } = req.body;
     try {
       if (password && phoneNumber && name) {
         const userDocument = await UserModel.create({
@@ -21,8 +22,11 @@ const registerHandler: NextApiHandler = async (
         });
 
         const response: APIResponse = {
-          data: userDocument.toJSON(),
+          data: userDocument.toObject(),
         };
+        // Start creating the user's first waste document
+
+        await WasteModel.create({});
 
         res.status(200).json(response);
         return;

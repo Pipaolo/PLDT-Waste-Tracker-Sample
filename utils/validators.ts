@@ -1,5 +1,5 @@
 import * as yup from "yup";
-export const philippineNumberRegex = new RegExp("^(09|\\+639)\\d{9}$");
+export const philippineNumberRegex = new RegExp("^(9|09|\\+639)\\d{9}$");
 export const passwordRegex = new RegExp(
   "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"
 );

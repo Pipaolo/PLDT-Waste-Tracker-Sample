@@ -10,9 +10,9 @@ const userHandler: NextApiHandler = async (
   const { userID } = req.query;
 
   try {
-    const userDocument = await UserModel.findById(userID.toString());
+    const user = await UserModel.findById(userID.toString()).lean();
 
-    if (!userDocument) {
+    if (!user) {
       res.status(400).json({
         error: {
           message: "User not found!",
@@ -23,7 +23,7 @@ const userHandler: NextApiHandler = async (
     }
 
     res.status(200).json({
-      data: userDocument.toJSON(),
+      data: user,
     });
     return;
   } catch (error) {

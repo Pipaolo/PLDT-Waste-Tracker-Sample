@@ -55,7 +55,7 @@ const RegisterPage = () => {
       points: 0,
     };
 
-    registerState.register(JSON.stringify(newUser));
+    registerState.register(newUser);
   };
 
   const buildLoading = () => {
