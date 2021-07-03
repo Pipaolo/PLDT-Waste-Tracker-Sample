@@ -25,7 +25,7 @@ const UserSchema: Schema = new Schema<IUser>(
     },
     points: {
       type: Number,
-      required: true,
+      default: 0,
     },
   },
   {

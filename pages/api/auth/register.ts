@@ -26,7 +26,9 @@ const registerHandler: NextApiHandler = async (
         };
         // Start creating the user's first waste document
 
-        await WasteModel.create({});
+        await WasteModel.create({
+          phoneNumber: generalizePhoneNumber(phoneNumber),
+        });
 
         res.status(200).json(response);
         return;
