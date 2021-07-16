@@ -1,5 +1,6 @@
 import axios from "axios";
 import create from "zustand";
+import { signIn } from "next-auth/client";
 
 interface LoginState {
   isLoading: boolean;
@@ -12,28 +13,34 @@ export const useLoginStore = create<LoginState>((set) => ({
   isLoading: false,
   success: false,
   error: null,
-  login: async (phoneNumber, password) => {
+  login: async (username, password) => {
     try {
       set({ isLoading: true, error: null, success: null });
-      const response = await axios.patch("/api/auth/login", {
-        phoneNumber,
+
+      const response = await signIn("credentials", {
+        username,
         password,
       });
+      console.log(response);
+      // const response = await axios.patch("/api/auth/login", {
+      //   phoneNumber,
+      //   password,
+      // });
 
-      const responseData = await response.data;
+      // const responseData = await response.data;
 
-      if (responseData.error) {
-        set({
-          isLoading: false,
-          error: responseData.error.message,
-          success: null,
-        });
-        return;
-      }
+      // if (responseData.error) {
+      //   set({
+      //     isLoading: false,
+      //     error: responseData.error.message,
+      //     success: null,
+      //   });
+      //   return;
+      // }
       set({
         isLoading: false,
         error: null,
-        success: responseData.data,
+        success: "",
       });
     } catch (error) {
       set({

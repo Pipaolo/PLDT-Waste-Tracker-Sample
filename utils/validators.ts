@@ -6,16 +6,10 @@ export const passwordRegex = new RegExp(
 export const nameRegex = new RegExp("^[a-z A-Z]+$");
 
 export const loginScheme = yup.object().shape({
-  phoneNumber: yup
-    .string()
-    .matches(philippineNumberRegex, "Invalid Phone Number"),
+  username: yup.string().required(),
   password: yup
     .string()
     .min(6, "Password needs to be atleast 6 characters")
-    .matches(
-      passwordRegex,
-      "Password must contain, 1 Uppercase character, Special Character and Number"
-    )
     .required("This field is required"),
 });
 
