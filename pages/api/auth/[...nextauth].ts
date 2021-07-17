@@ -1,5 +1,7 @@
+import mongoose from "mongoose";
 import NextAuth from "next-auth";
 import Providers, { CredentialsProvider } from "next-auth/providers";
+import { dbConnect } from "../../../utils/dbConnect";
 export default NextAuth({
   providers: [
     Providers.Credentials({
@@ -11,20 +13,23 @@ export default NextAuth({
           type: "text",
         },
       },
-      
+
       authorize: async (creds, req) => {
-        return {
-          username: "admin",
-          sampleData: "Nice Sample!",
-        };
+        const db = await dbConnect();
+        const user = await db
+          .collection("users")
+          .findOne({ username: creds.username, password: creds.password });
+        if (!user) {
+          throw Error("Invalid Username/Password!");
+        }
+
+        return user;
       },
-      
-    },),
+    }),
   ],
   callbacks: {
     redirect: async (url, baseURL) => {
-      
-      return '/admin';
+      return "/admin";
     },
     jwt: async (token, user) => {
       if (user) {
@@ -39,5 +44,6 @@ export default NextAuth({
   },
   pages: {
     signIn: "/auth/login",
+    error: "/auth/error",
   },
 });
