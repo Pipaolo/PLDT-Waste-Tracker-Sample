@@ -11,15 +11,21 @@ export default NextAuth({
           type: "text",
         },
       },
+      
       authorize: async (creds, req) => {
         return {
           username: "admin",
           sampleData: "Nice Sample!",
         };
       },
-    }),
+      
+    },),
   ],
   callbacks: {
+    redirect: async (url, baseURL) => {
+      
+      return '/admin';
+    },
     jwt: async (token, user) => {
       if (user) {
         token.user = user;

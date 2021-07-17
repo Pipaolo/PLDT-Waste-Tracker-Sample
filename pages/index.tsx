@@ -12,7 +12,6 @@ export default function Home() {
       <Head>
         <title>PLDT Smart Waste Tracker</title>
       </Head>
-      <header></header>
       <main className="flex-1 flex items-center justify-center">
         <div className="bg-white rounded-lg elevation-12 p-8 border-1 border-pldt-red ">
           <div className="flex flex-col items-center justify-center h-full">
