@@ -11,7 +11,6 @@ interface LogoProps {
 }
 
 export const Logo = (props: LogoProps) => {
-  console.log(props.height || 150);
   return (
     <Image
       className={classnames(["cursor-pointer", props.className ?? ""])}
