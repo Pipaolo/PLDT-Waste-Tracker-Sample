@@ -6,6 +6,7 @@ import WasteTransactionModel, {
   WasteTransaction,
 } from '../../../../models/waste_transaction';
 import moment from 'moment';
+import checkAdmin from '../../../../middleware/checkAdmin';
 
 const transactionsHandler: NextApiHandler<APIResponse> = async (req, res) => {
   switch (req.method) {
@@ -53,4 +54,4 @@ const getTransactions: NextApiHandler<APIResponse<WasteTransaction[]>> = async (
   }
 };
 
-export default connectDB(transactionsHandler);
+export default checkAdmin(connectDB(transactionsHandler));

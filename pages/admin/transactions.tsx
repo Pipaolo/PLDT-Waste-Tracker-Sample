@@ -104,7 +104,6 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
       ...t,
       createdAt: moment(t.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
     }));
-    console.log(parsedTransactions);
     return {
       props: {
         transactions,
