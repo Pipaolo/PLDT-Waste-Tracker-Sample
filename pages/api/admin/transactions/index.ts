@@ -44,10 +44,10 @@ const getTransactions: NextApiHandler<APIResponse<WasteTransaction[]>> = async (
       data: transactions,
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(402).json({
       error: {
         message: String(error),
-        statusCode: 500,
+        statusCode: 402,
       },
     });
   }

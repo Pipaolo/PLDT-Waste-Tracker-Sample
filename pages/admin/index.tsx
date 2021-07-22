@@ -11,6 +11,7 @@ import { ResponsivePie } from '@nivo/pie';
 import { getSession } from 'next-auth/client';
 import { getToken } from 'next-auth/jwt';
 import { NextApiRequest } from 'next-auth/internals/utils';
+import AdminAppbar from '../../components/admin/AdminAppbar';
 
 interface IProps {
   transactions?:
@@ -24,8 +25,8 @@ interface IProps {
 const AdminPage = (props: IProps) => {
   const renderTransactionsStats = () => {
     return (
-      <div className="grid items-center w-full grid-cols-2 p-8 bg-white border-2 border-gray-200 rounded-lg h-72">
-        <div className="flex flex-col items-center w-full h-full">
+      <div className="flex flex-col items-center w-full h-full gap-4 p-8 bg-white border-2 border-gray-200 rounded-lg md:gap-0 md:grid md:grid-cols-2 md:h-72">
+        <div className="flex flex-col items-center w-full md:h-full h-72">
           <ResponsivePie
             data={props.transactions.overall}
             animate={true}
@@ -61,7 +62,7 @@ const AdminPage = (props: IProps) => {
           />
           <span>Overall Transactions</span>
         </div>
-        <div className="flex flex-col items-center w-full h-full">
+        <div className="flex flex-col items-center w-full md:h-full h-72">
           <ResponsivePie
             data={props.transactions.daily}
             animate={true}
@@ -100,12 +101,13 @@ const AdminPage = (props: IProps) => {
     );
   };
   return (
-    <PrivateContainer className="flex justify-between w-full h-screen gap-4 bg-black md:h-screen">
+    <PrivateContainer className="flex flex-col w-full h-screen gap-4 p-4 mt-20 bg-black md:p-0 md:flex-row md:mt-0 md:h-screen">
       <Head>
         <title>Admin Panel</title>
       </Head>
+      <AdminAppbar/>
       <NavigationBar className="h-full p-4"></NavigationBar>
-      <Container className="w-full p-4">
+      <Container className="w-full md:p-4">
         <Container className="flex flex-col w-full bg-white rounded-lg ">
           <AdminHeader title="Dashboard"></AdminHeader>
           <Container className="flex flex-col w-full gap-4 ">

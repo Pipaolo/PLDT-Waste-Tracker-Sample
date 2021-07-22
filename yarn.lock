@@ -298,6 +298,11 @@
   dependencies:
     purgecss "^3.1.3"
 
+"@graywolfai/react-heroicons@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@graywolfai/react-heroicons/-/react-heroicons-1.2.3.tgz#0f2bc948dcb6bc507b6d1f4786f49f9c9bcf1949"
+  integrity sha512-ZvNp+pz8dp3Gj0UgoVSLPYAynSof+BafQApay0XQEmy9l2iOEnw3asI8wIFbScNLnB2pVCUc3XccZOczFqdQPQ==
+
 "@hapi/accept@5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-5.0.1.tgz#068553e867f0f63225a506ed74e899441af53e10"
@@ -4373,6 +4378,11 @@ react-hook-form@^7.5.2:
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.5.2.tgz#4f8da6d22ae67aa18ce170a0980bd7e1e7bd6917"
   integrity sha512-fRA6TieC+wsumcdAM7OTeWSa+s+qG2ZlWfTXB2gpOwVeWpJxDwUpZZRfZdU9Bj6TEn1v/ZPJg/1xbmUGVI+MWA==
+
+react-icons@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.2.0.tgz#6dda80c8a8f338ff96a1851424d63083282630d0"
+  integrity sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==
 
 react-is@16.13.1, react-is@^16.8.1:
   version "16.13.1"

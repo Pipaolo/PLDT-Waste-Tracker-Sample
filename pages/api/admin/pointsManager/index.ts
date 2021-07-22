@@ -24,7 +24,7 @@ const pointsManagerHandler: NextApiHandler<APIResponse> = async (req, res) => {
     case HTTPMethods.Post:
       return createItemPoints(req, res);
     default:
-      res.redirect('/500');
+      res.redirect('/unauthorized');
       return;
   }
 };

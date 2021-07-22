@@ -64,10 +64,10 @@ const getDailyTransactionsStats: NextApiHandler<APIResponse> = async (
       data: stats[0],
     });
   } catch (err) {
-    return res.status(500).json({
+    return res.status(402).json({
       error: {
         message: String(err),
-        statusCode: 500,
+        statusCode: 402,
       },
     });
   }
@@ -107,11 +107,10 @@ const getOverallTransactionsStats: NextApiHandler<APIResponse> = async (
       data: stats[0],
     });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({
+    return res.status(402).json({
       error: {
         message: String(err),
-        statusCode: 500,
+        statusCode: 402,
       },
     });
   }

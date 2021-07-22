@@ -9,7 +9,7 @@ const checkAdmin =
     });
 
     if (!session) {
-      res.redirect('/500');
+      res.redirect('/unauthorized');
       return;
     }
     return handler(req, res);

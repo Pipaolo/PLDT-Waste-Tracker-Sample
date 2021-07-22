@@ -10,6 +10,7 @@ import { Container, PrivateContainer } from '../../shared_components';
 import { APIResponse } from '../../types/api_response';
 import { useTable, Column } from 'react-table';
 import moment from 'moment';
+import AdminAppbar from '../../components/admin/AdminAppbar';
 
 interface IProps {
   transactions: Array<WasteTransaction>;
@@ -48,10 +49,11 @@ const AdminTransactionsPage = (props: IProps) => {
     });
 
   return (
-    <PrivateContainer className="flex flex-row justify-center w-full gap-4 md:h-screen">
+    <PrivateContainer className="flex flex-col w-full h-screen gap-4 p-4 mt-20 bg-black md:p-0 md:flex-row md:mt-0 md:h-screen">
       <Head>
         <title>Transactions</title>
       </Head>
+      <AdminAppbar/>
       <NavigationBar className="h-full p-4"></NavigationBar>
       <Container className="w-full p-4">
         <Container className="flex flex-col w-full bg-white rounded-lg ">

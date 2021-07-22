@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { AdminHeader, NavigationBar } from '../../../components';
+import AdminAppbar from '../../../components/admin/AdminAppbar';
 import { hostname } from '../../../config';
 import { useAccessToken } from '../../../hooks/useAccessToken';
 import {
@@ -52,10 +53,11 @@ const AdminCreatePointsManagerPage = (props: IProps) => {
   };
 
   return (
-    <PrivateContainer className="flex flex-row justify-center w-full gap-4 md:h-screen">
+    <PrivateContainer className="flex flex-col w-full h-screen gap-4 p-4 mt-20 bg-black md:p-0 md:flex-row md:mt-0 md:h-screen">
       <Head>
         <title>Create Points Manager</title>
       </Head>
+      <AdminAppbar/>
       <NavigationBar className="h-full p-4"></NavigationBar>
       <Container className="w-full p-4">
         <Container className="flex flex-col w-full gap-2 bg-white rounded-lg ">
