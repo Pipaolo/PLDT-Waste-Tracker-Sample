@@ -1,17 +1,17 @@
 module.exports = {
-  purge: [],
+  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      "pt-scans": ["PT Scans", "sans-serif"],
-      oswald: ["Oswald", "sans-serif"],
+      'pt-scans': ['PT Scans', 'sans-serif'],
+      oswald: ['Oswald', 'sans-serif'],
     },
     ripple: (theme) => ({
-      colors: theme("colors"),
+      colors: theme('colors'),
     }),
     extend: {
       colors: {
-        "pldt-red": "#E72D2F",
+        'pldt-red': '#E72D2F',
       },
     },
   },
@@ -19,19 +19,19 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    require("tailwindcss-elevation")(["responsive", "hover"]),
-    require("tailwindcss-ripple")(),
-    require("tailwindcss-tables")(),
-    require("tailwindcss-animatecss")({
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss-elevation')(['responsive', 'hover']),
+    require('tailwindcss-ripple')(),
+    require('tailwindcss-tables')(),
+    require('tailwindcss-animatecss')({
       classes: [
-        "animate__animated",
-        "animate__fadeIn",
-        "animate__bounceIn",
-        "animate__lightSpeedOut",
+        'animate__animated',
+        'animate__fadeIn',
+        'animate__bounceIn',
+        'animate__lightSpeedOut',
       ],
-      variants: ["responsive", "hover", "reduced-motion"],
+      variants: ['responsive', 'hover', 'reduced-motion'],
     }),
   ],
 };

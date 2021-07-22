@@ -143,8 +143,8 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
     );
       
     // Convert the responses into the chart readable format
-    const dailyTransactionsData = dailyTransactionsResponse.data.data || {};
-    const allTransactionsData = allTransactionsResponse.data.data || {};
+    const dailyTransactionsData = (dailyTransactionsResponse.data) ? dailyTransactionsResponse.data.data : {};
+    const allTransactionsData = (allTransactionsResponse.data) ? allTransactionsResponse.data.data : {};
     const allTransactionsChartData = Object.keys(allTransactionsData).map(
       (key) => ({
         id: key,
@@ -162,14 +162,20 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
     return {
       props: {
         transactions: {
-          daily: dailyTransactionsChartData,
-          overall: allTransactionsChartData,
+          daily: dailyTransactionsChartData || [],
+          overall: allTransactionsChartData || [],
         },
       },
     };
   } catch (error) {
+    console.log(error);
     return {
-      props: {},
+      props: {
+        transactions: {
+          daily: [],
+          overall:  [],
+        },
+      },
     };
   }
 };
