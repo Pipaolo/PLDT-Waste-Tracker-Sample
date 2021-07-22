@@ -97,14 +97,14 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
       `${hostname}/api/admin/transactions`,
       { headers: context.req.headers }
     );
-    const transactions = response.data.data as Array<WasteTransaction>;
+    const transactions = response.data.data || [];
 
     // Start converting the transcations createdAt date
     const parsedTransactions = transactions.map((t) => ({
       ...t,
       createdAt: moment(t.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
     }));
-
+    console.log(parsedTransactions);
     return {
       props: {
         transactions,
