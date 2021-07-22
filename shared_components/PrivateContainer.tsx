@@ -22,7 +22,8 @@ export const PrivateContainer = (props: IProps) => {
   }
   
   if(!session && !loading) {
-      router.replace('/auth/login') ;
+    router.replace('/auth/login');
+    return null;
   }
   
 
