@@ -11,11 +11,22 @@ import { APIResponse } from '../../../types/api_response';
 import { useTable, Column } from 'react-table';
 import moment from 'moment';
 import AdminAppbar from '../../../components/admin/AdminAppbar';
+import { useWasteTransactionsStore } from '../../../stores/wasteTransactionsStore';
+import { useEffect } from 'react';
+import { useAccessToken } from '../../../hooks/useAccessToken';
+import Loader from 'react-loader-spinner';
 
 interface IProps {
-  transactions: Array<WasteTransaction>;
+  accessToken?: string;
 }
+
 const AdminTransactionsPage = (props: IProps) => {
+  const wasteTransactionsState = useWasteTransactionsStore();
+
+  useEffect(() => {
+    wasteTransactionsState.getWasteTransactions(props.accessToken);
+  }, []);
+
   const columns: Array<Column<WasteTransaction>> = useMemo(
     () => [
       {
@@ -45,8 +56,45 @@ const AdminTransactionsPage = (props: IProps) => {
   const { getTableBodyProps, getTableProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: props.transactions,
+      data: wasteTransactionsState.data,
     });
+
+  const renderLoading = () => {
+    if (wasteTransactionsState.isLoading && !wasteTransactionsState.success) {
+      return (
+        <div className="flex justify-center w-full">
+          <Loader type="TailSpin" color="#E72D2F" height={40} width={40} />
+        </div>
+      );
+    }
+    
+
+    return  <table className="table" {...getTableProps()}>
+    <thead>
+      {headerGroups.map((headerGroup) => (
+        <tr {...headerGroup.getHeaderGroupProps()}>
+          {headerGroup.headers.map((col) => (
+            <th {...col.getHeaderProps()}>{col.render('Header')}</th>
+          ))}
+        </tr>
+      ))}
+    </thead>
+    <tbody {...getTableBodyProps()}>
+      {rows.map((row) => {
+        prepareRow(row);
+        return (
+          <tr {...row.getRowProps()}>
+            {row.cells.map((cell) => {
+              return (
+                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+              );
+            })}
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+  };
 
   return (
     <PrivateContainer className="flex flex-col w-full h-screen gap-4 p-4 mt-20 bg-black md:p-0 md:flex-row md:mt-0 md:h-screen">
@@ -58,31 +106,7 @@ const AdminTransactionsPage = (props: IProps) => {
       <Container className="w-full p-4">
         <Container className="flex flex-col w-full bg-white rounded-lg ">
           <AdminHeader title="Transactions"></AdminHeader>
-          <table className="table" {...getTableProps()}>
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((col) => (
-                    <th {...col.getHeaderProps()}>{col.render('Header')}</th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          {renderLoading()}
         </Container>
       </Container>
     </PrivateContainer>
@@ -93,28 +117,25 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
   context
 ) => {
   try {
-    const response = await axios.get<APIResponse>(
-      `${hostname}/api/admin/transactions`,
-      { headers: context.req.headers }
-    );
-    const transactions = response.data.data || [];
+    const token = useAccessToken(context.req);
 
-    // Start converting the transcations createdAt date
-    const parsedTransactions = transactions.map((t) => ({
-      ...t,
-      createdAt: moment(t.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
-    }));
+    if (!token) {
+      return {
+        props: {},
+        redirect: {
+          destination: '/auth/login',
+        },
+      };
+    }
+
     return {
       props: {
-        transactions,
+        accessToken: token,
       },
     };
   } catch (error) {
-    console.error(error);
     return {
-      props: {
-        transactions: [],
-      },
+      props: {},
     };
   }
 };
