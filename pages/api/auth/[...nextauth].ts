@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import NextAuth from "next-auth";
 import Providers, { CredentialsProvider } from "next-auth/providers";
+import { AuthErrors } from "../../../consts/errors";
 import { dbConnect } from "../../../utils/dbConnect";
+import UserModel from "../../../models/user";
 export default NextAuth({
   providers: [
     Providers.Credentials({
@@ -15,15 +17,29 @@ export default NextAuth({
       },
 
       authorize: async (creds, req) => {
-        const db = await dbConnect();
-        const user = await db
-          .collection("users")
-          .findOne({ username: creds.username, password: creds.password });
+        await dbConnect();
+        const user = await UserModel.findOne({
+          username: creds.username,
+        });
         if (!user) {
           throw Error("Invalid Username/Password!");
         }
+        // Start checking for password
+        const isPasswordCorrect = await new Promise<boolean | any>(
+          (res, rej) => {
+            user.comparePassword(creds.password, (err, isMatch) => {
+              if (err) {
+                rej(err);
+              }
+              res(isMatch);
+            });
+          }
+        );
 
-        return user;
+        if (!isPasswordCorrect) {
+          throw Error(AuthErrors.INVALID_CREDENTIALS);
+        }
+        return user.toJSON();
       },
     }),
   ],
