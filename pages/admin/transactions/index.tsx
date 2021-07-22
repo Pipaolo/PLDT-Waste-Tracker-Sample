@@ -3,14 +3,14 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { useMemo } from 'react';
-import { AdminHeader, NavigationBar } from '../../components';
-import { hostname } from '../../config';
-import { WasteTransaction } from '../../models/waste_transaction';
-import { Container, PrivateContainer } from '../../shared_components';
-import { APIResponse } from '../../types/api_response';
+import { AdminHeader, NavigationBar } from '../../../components';
+import { hostname } from '../../../config';
+import { WasteTransaction } from '../../../models/waste_transaction';
+import { Container, PrivateContainer } from '../../../shared_components';
+import { APIResponse } from '../../../types/api_response';
 import { useTable, Column } from 'react-table';
 import moment from 'moment';
-import AdminAppbar from '../../components/admin/AdminAppbar';
+import AdminAppbar from '../../../components/admin/AdminAppbar';
 
 interface IProps {
   transactions: Array<WasteTransaction>;
