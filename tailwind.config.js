@@ -23,6 +23,7 @@ module.exports = {
     require("@tailwindcss/typography"),
     require("tailwindcss-elevation")(["responsive", "hover"]),
     require("tailwindcss-ripple")(),
+    require("tailwindcss-tables")(),
     require("tailwindcss-animatecss")({
       classes: [
         "animate__animated",
@@ -30,7 +31,6 @@ module.exports = {
         "animate__bounceIn",
         "animate__lightSpeedOut",
       ],
-
       variants: ["responsive", "hover", "reduced-motion"],
     }),
   ],

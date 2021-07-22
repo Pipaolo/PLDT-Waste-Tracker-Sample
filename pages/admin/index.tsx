@@ -4,30 +4,23 @@ import { AdminFooter, AdminHeader, NavigationBar } from "../../components";
 
 const AdminPage = () => {
   return (
-    <PrivateContainer className="flex flex-col bg-black md:h-screen ">
+    <PrivateContainer className="flex justify-between w-full h-screen gap-4 bg-black md:h-screen">
       <Head>
         <title>Admin Panel</title>
       </Head>
-      <Container className="flex w-full gap-2 p-2">
-        <NavigationBar className="h-full p-4"></NavigationBar>
-        <div className="flex flex-col justify-between w-full gap-2">
-          <AdminHeader classNames="p-4" title="Dashboard"></AdminHeader>
-          <Container className="prose flex flex-col gap-4 ">
-            <h1 className=" ">Transactions</h1>
+      <NavigationBar className="h-full p-4"></NavigationBar>
+      <Container className="w-full p-4">
+        <Container className="flex flex-col w-full bg-white rounded-lg ">
+          <AdminHeader title="Dashboard"></AdminHeader>
+          <Container className="flex flex-col gap-4 prose md:prose-sm">
+            <h1 className="font-oswald">Transactions</h1>
             <Container className="grid grid-cols-2">
-              <div className=" h-32 w-64 bg-white border-2 border-gray-200 rounded-lg flex justify-center items-center ">
+               <div className="flex items-center justify-center w-64 h-32 bg-white border-2 border-gray-200 rounded-lg ">
                 Sample Content
               </div>
             </Container>
           </Container>
-          <Container className="flex flex-wrap gap-4 overflow-y-auto overflow-x-hidden">
-            <div></div>
-            <div className=" h-32 w-64 bg-white border-2 border-gray-200 rounded-lg flex justify-center items-center ">
-              Sample Content
-            </div>
-          </Container>
-          <AdminFooter className=" p-4"></AdminFooter>
-        </div>
+        </Container>
       </Container>
     </PrivateContainer>
   );

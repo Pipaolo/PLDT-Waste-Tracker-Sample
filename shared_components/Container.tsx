@@ -6,9 +6,5 @@ interface IProps {
 }
 
 export const Container = (props: IProps) => {
-  return (
-    <div className={classNames(["w-full h-full", props.className])}>
-      {props.children}
-    </div>
-  );
+  return <div className={classNames([props.className])}>{props.children}</div>;
 };

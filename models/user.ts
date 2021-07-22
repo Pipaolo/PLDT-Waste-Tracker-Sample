@@ -1,5 +1,5 @@
-import { Schema, Document, model, models, Model } from "mongoose";
-import bcrypt from "bcrypt";
+import { Schema, Document, model, models, Model } from 'mongoose';
+import bcrypt from 'bcrypt';
 
 export interface User {
   username: string;
@@ -38,11 +38,11 @@ const UserSchema: Schema = new Schema<UserDocument, UserModel>(
 );
 
 // Handle password Hashing
-UserSchema.pre<UserDocument>("save", function (next) {
+UserSchema.pre<UserDocument>('save', function (next) {
   // We only need to hash the password if the document
   // has been modified or new
 
-  if (!this.isModified("password")) return next();
+  if (!this.isModified('password')) return next();
 
   // Start salt generation
   bcrypt.genSalt(10, (err, salt) => {
@@ -71,14 +71,14 @@ UserSchema.methods.comparePassword = function (
   });
 };
 
-UserSchema.post("save", function (error, res, next) {
-  if (error.name === "MongoError" && error.code === 11000) {
+UserSchema.post('save', function (error, res, next) {
+  if (error.name === 'MongoError' && error.code === 11000) {
     console.log(error);
-    next(new Error("A User already registered with that number."));
+    next(new Error('A User already registered with that number.'));
   } else {
     next();
   }
 });
 
 export default (models.User as UserModel) ||
-  model<UserDocument, UserModel>("User", UserSchema);
+  model<UserDocument, UserModel>('User', UserSchema);
