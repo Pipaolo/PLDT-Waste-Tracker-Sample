@@ -44,7 +44,7 @@ const AdminCreatePointsManagerPage = (props: IProps) => {
 
   useEffect(() => {
     if (!itemPointsState.isLoading && itemPointsState.success) {
-      router.push(`${hostname}/admin/pointsManager`);
+      router.push(`/admin/pointsManager`);
     }
   }, [itemPointsState]);
 
