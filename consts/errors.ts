@@ -1,0 +1,8 @@
+
+export enum Errors  {
+    INVALID_PARAMETERS = 'INVALID_PARAMETERS',
+    INVALID_ROUTE = "INVALID_ROUTE",
+}
+export enum AuthErrors {
+    INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
+}
