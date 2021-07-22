@@ -13,34 +13,15 @@ const transactionsHandler: NextApiHandler<APIResponse> = async (req, res) => {
     case HTTPMethods.Get:
       return getTransactions(req, res);
     default:
-      res.redirect('/api/invalid');
+      res.redirect('/404');
+      return;
   }
 };
 
-const getTransactions: NextApiHandler<APIResponse<WasteTransaction[]>> = async (
-  req,
-  res
-) => {
+const getTransactions: NextApiHandler<APIResponse> = async (req, res) => {
   try {
-    const { sortBy } = req.query;
-
     // Start handling the sorting
-    let transactions: Array<WasteTransaction>;
-
-    if (sortBy && sortBy === 'DAILY') {
-      const currentDate = moment().startOf('day').toDate();
-      const tomorrowDate = moment(currentDate).add(1, 'days').toDate();
-
-      transactions = await WasteTransactionModel.find({
-        createdAt: {
-          $gte: currentDate,
-          $lt: tomorrowDate,
-        },
-      });
-    } else {
-      transactions = await WasteTransactionModel.find();
-    }
-
+    const transactions = await WasteTransactionModel.find().lean();
     return res.status(200).json({
       data: transactions,
     });
