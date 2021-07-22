@@ -2,15 +2,14 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    fontFamily:{
-      'pt-scans':['PT Scans', 'sans-serif'], 
-      'oswald': ['Oswald', 'sans-serif'],
+    fontFamily: {
+      "pt-scans": ["PT Scans", "sans-serif"],
+      oswald: ["Oswald", "sans-serif"],
     },
     ripple: (theme) => ({
       colors: theme("colors"),
     }),
     extend: {
-      
       colors: {
         "pldt-red": "#E72D2F",
       },
@@ -21,6 +20,7 @@ module.exports = {
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
     require("tailwindcss-elevation")(["responsive", "hover"]),
     require("tailwindcss-ripple")(),
     require("tailwindcss-animatecss")({
