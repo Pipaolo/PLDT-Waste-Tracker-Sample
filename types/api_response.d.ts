@@ -1,6 +1,6 @@
-import { APIError } from "./api_error";
+import { APIError } from './api_error';
 
 export interface APIResponse {
-    error?: APIError
-    data?: Object
+  error?: APIError;
+  data?: Object;
 }

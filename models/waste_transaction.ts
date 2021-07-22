@@ -1,13 +1,13 @@
-import { Schema, Document, model, models, Model } from "mongoose";
-import { WatchObserver } from "react-hook-form";
+import { Schema, Document, model, models, Model } from 'mongoose';
+import { WatchObserver } from 'react-hook-form';
 
 export interface WasteTransaction {
   batteries: number;
   phones: number;
   chargers: number;
   phoneNumber: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export interface WasteTransactionDocument extends WasteTransaction, Document {}
@@ -44,7 +44,7 @@ const WasteTransaction: Schema = new Schema<
 
 export default (models.WasteTransaction as WasteTransactionModel) ||
   model<WasteTransactionDocument, WasteTransactionModel>(
-    "WasteTransaction",
+    'WasteTransaction',
     WasteTransaction,
-    "waste_transaction"
+    'waste_transaction'
   );

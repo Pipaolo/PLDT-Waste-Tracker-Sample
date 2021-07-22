@@ -9,6 +9,7 @@ import { WasteTransaction } from '../../models/waste_transaction';
 import { Container, PrivateContainer } from '../../shared_components';
 import { APIResponse } from '../../types/api_response';
 import { useTable, Column } from 'react-table';
+import moment from 'moment';
 
 interface IProps {
   transactions: Array<WasteTransaction>;
@@ -70,9 +71,13 @@ const AdminTransactionsPage = (props: IProps) => {
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    ))}
+                    {row.cells.map((cell) => {
+                      return (
+                        <td  {...cell.getCellProps()}>{
+                         cell.render("Cell")
+                        }</td>
+                      );
+                    })}
                   </tr>
                 );
               })}
@@ -92,9 +97,16 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
       `${hostname}/api/transactions`
     );
     const transactions = response.data.data as Array<WasteTransaction>;
+    
+    // Start converting the transcations createdAt date
+    const parsedTransactions = transactions.map((t) => ({
+      ...t,
+      createdAt: moment(t.createdAt).format("MMMM Do YYYY, h:mm:ss a")
+    }));
+
     return {
       props: {
-        transactions,
+        transactions:parsedTransactions,
       },
     };
   } catch (error) {

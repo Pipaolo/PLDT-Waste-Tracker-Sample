@@ -22,6 +22,10 @@ const routes: Array<IRoute> = [
   {
     name: "Transactions",
     route: '/admin/transactions',
+  },
+  {
+    name: "Points Manager",
+    route: '/admin/pointsManager',
   }
 ]
 

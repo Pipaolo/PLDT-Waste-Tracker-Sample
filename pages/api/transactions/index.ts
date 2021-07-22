@@ -2,7 +2,10 @@ import { NextApiHandler } from 'next';
 import { HTTPMethods } from '../../../consts/http_methods';
 import connectDB from '../../../middleware/mongodb';
 import { APIResponse } from '../../../types/api_response';
-import WasteTransactionModel from '../../../models/waste_transaction';
+import WasteTransactionModel, {
+  WasteTransaction,
+} from '../../../models/waste_transaction';
+import moment from 'moment';
 
 const transactionsHandler: NextApiHandler<APIResponse> = async (req, res) => {
   switch (req.method) {
@@ -15,17 +18,34 @@ const transactionsHandler: NextApiHandler<APIResponse> = async (req, res) => {
 
 const getTransactions: NextApiHandler<APIResponse> = async (req, res) => {
   try {
-    const transactions = await WasteTransactionModel.find();
+    const { sortBy } = req.query;
+
+    // Start handling the sorting
+    let transactions: Array<WasteTransaction>;
+
+    if (sortBy && sortBy === 'DAILY') {
+      const currentDate = moment().startOf('day').toDate();
+      const tomorrowDate = moment(currentDate).add(1, 'days').toDate();
+
+      transactions = await WasteTransactionModel.find({
+        createdAt: {
+          $gte: currentDate,
+          $lt: tomorrowDate,
+        },
+      });
+    } else {
+      transactions = await WasteTransactionModel.find();
+    }
 
     return res.status(200).json({
-      data: transactions
+      data: transactions,
     });
   } catch (error) {
     return res.status(500).json({
       error: {
         message: String(error),
-        statusCode: 500
-      }
+        statusCode: 500,
+      },
     });
   }
 };
