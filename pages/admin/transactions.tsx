@@ -53,7 +53,7 @@ const AdminTransactionsPage = (props: IProps) => {
       <Head>
         <title>Transactions</title>
       </Head>
-      <AdminAppbar/>
+      <AdminAppbar />
       <NavigationBar className="h-full p-4"></NavigationBar>
       <Container className="w-full p-4">
         <Container className="flex flex-col w-full bg-white rounded-lg ">
@@ -75,9 +75,7 @@ const AdminTransactionsPage = (props: IProps) => {
                   <tr {...row.getRowProps()}>
                     {row.cells.map((cell) => {
                       return (
-                        <td  {...cell.getCellProps()}>{
-                         cell.render("Cell")
-                        }</td>
+                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                       );
                     })}
                   </tr>
@@ -97,22 +95,23 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
   try {
     const response = await axios.get<APIResponse>(
       `${hostname}/api/admin/transactions`,
-      {headers: context.req.headers}
+      { headers: context.req.headers }
     );
     const transactions = response.data.data as Array<WasteTransaction>;
-    
+
     // Start converting the transcations createdAt date
     const parsedTransactions = transactions.map((t) => ({
       ...t,
-      createdAt: moment(t.createdAt).format("MMMM Do YYYY, h:mm:ss a")
+      createdAt: moment(t.createdAt).format('MMMM Do YYYY, h:mm:ss a'),
     }));
 
     return {
       props: {
-        transactions:parsedTransactions,
+        transactions,
       },
     };
   } catch (error) {
+    console.error(error);
     return {
       props: {
         transactions: [],
