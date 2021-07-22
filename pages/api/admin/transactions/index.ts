@@ -1,10 +1,10 @@
 import { NextApiHandler } from 'next';
-import { HTTPMethods } from '../../../consts/http_methods';
-import connectDB from '../../../middleware/mongodb';
-import { APIResponse } from '../../../types/api_response';
+import { HTTPMethods } from '../../../../consts/http_methods';
+import connectDB from '../../../../middleware/mongodb';
+import { APIResponse } from '../../../../types/api_response';
 import WasteTransactionModel, {
   WasteTransaction,
-} from '../../../models/waste_transaction';
+} from '../../../../models/waste_transaction';
 import moment from 'moment';
 
 const transactionsHandler: NextApiHandler<APIResponse> = async (req, res) => {
@@ -16,7 +16,10 @@ const transactionsHandler: NextApiHandler<APIResponse> = async (req, res) => {
   }
 };
 
-const getTransactions: NextApiHandler<APIResponse> = async (req, res) => {
+const getTransactions: NextApiHandler<APIResponse<WasteTransaction[]>> = async (
+  req,
+  res
+) => {
   try {
     const { sortBy } = req.query;
 

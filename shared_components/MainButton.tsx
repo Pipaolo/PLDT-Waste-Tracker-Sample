@@ -1,22 +1,24 @@
-import classNames from "classnames";
-import { MouseEventHandler, ReactNode } from "react";
+import classNames from 'classnames';
+import { ButtonHTMLAttributes } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 
-interface ButtonProps {
-  className?: string | "";
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string | '';
   children?: ReactNode;
-  onClick: MouseEventHandler;
+  onClick?: MouseEventHandler;
 }
 
 export const MainButton = (props: ButtonProps) => {
   return (
-    <div
+    <button
       className={classNames([
         props.className,
-        "cursor-pointer py-2 px-4 hover:elevation-4 transition duration-300",
+        'cursor-pointer py-2 px-4 hover:elevation-4 transition duration-300',
       ])}
       onClick={props.onClick}
+      {...props}
     >
       {props.children}
-    </div>
+    </button>
   );
 };

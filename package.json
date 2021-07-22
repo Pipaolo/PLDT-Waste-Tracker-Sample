@@ -1,6 +1,6 @@
 {
   "name": "pldt_next",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -20,6 +20,9 @@
   "dependencies": {
     "@heroicons/react": "^1.0.2",
     "@hookform/resolvers": "^2.4.0",
+    "@nivo/core": "^0.73.0",
+    "@nivo/line": "^0.73.0",
+    "@nivo/pie": "^0.73.0",
     "@tailwindcss/forms": "^0.3.2",
     "@tailwindcss/typography": "^0.4.1",
     "@types/bcrypt": "^5.0.0",
@@ -27,13 +30,14 @@
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "classnames": "^2.3.1",
+    "immer": "^9.0.5",
     "moment": "^2.29.1",
     "mongoose": "^5.12.8",
     "next": "10.2.0",
     "next-auth": "^3.27.3",
+    "next-joi": "^2.2.1",
     "passport": "^0.4.1",
     "react": "17.0.2",
-    "react-charts": "^3.0.0-beta.26",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.5.2",
     "react-loader-spinner": "^4.0.0",

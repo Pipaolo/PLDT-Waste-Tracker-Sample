@@ -49,7 +49,6 @@ const LoginPage = ({ csrfToken }: IProps) => {
         </div>
       );
     }
-    console.log(session);
     return (
       <div className="flex flex-col w-full">
         <OutlineButton className="mt-4" onClick={() => handleSubmit(onSubmit)}>

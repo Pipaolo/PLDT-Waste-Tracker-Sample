@@ -94,7 +94,8 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
 ) => {
   try {
     const response = await axios.get<APIResponse>(
-      `${hostname}/api/transactions`
+      `${hostname}/api/admin/transactions`,
+      {headers: context.req.headers}
     );
     const transactions = response.data.data as Array<WasteTransaction>;
     
