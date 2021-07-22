@@ -2,6 +2,10 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      "pt-scans": ["PT Scans", "sans-serif"],
+      oswald: ["Oswald", "sans-serif"],
+    },
     ripple: (theme) => ({
       colors: theme("colors"),
     }),
@@ -16,8 +20,10 @@ module.exports = {
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
     require("tailwindcss-elevation")(["responsive", "hover"]),
     require("tailwindcss-ripple")(),
+    require("tailwindcss-tables")(),
     require("tailwindcss-animatecss")({
       classes: [
         "animate__animated",
@@ -25,7 +31,6 @@ module.exports = {
         "animate__bounceIn",
         "animate__lightSpeedOut",
       ],
-
       variants: ["responsive", "hover", "reduced-motion"],
     }),
   ],

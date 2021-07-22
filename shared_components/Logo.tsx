@@ -5,6 +5,9 @@ import classnames from "classnames";
 interface LogoProps {
   className?: string;
   onClick?: MouseEventHandler;
+  width?: number;
+  height?: number;
+  layout?: "fixed" | "intrinsic" | "responsive";
 }
 
 export const Logo = (props: LogoProps) => {
@@ -14,9 +17,9 @@ export const Logo = (props: LogoProps) => {
       onClick={props.onClick}
       src="/pldt_logo.png"
       alt="PLDT LOGO"
-      width={150}
-      height={30}
-      layout="responsive"
+      width={props.width || 150}
+      height={props.height || 30}
+      layout={props.layout || "responsive"}
     ></Image>
   );
 };

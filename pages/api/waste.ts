@@ -1,12 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../middleware/mongodb";
-import WasteModel from "../../models/waste";
-import UserModel from "../../models/user";
-import { APIError } from "../../types/api_error";
-import { APIResponse } from "../../types/api_response";
-import { generalizePhoneNumber } from "../../utils/converters";
-import { philippineNumberRegex } from "../../utils/validators";
-import WasteTransactionModel from "../../models/waste_transaction";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import connectDB from '../../middleware/mongodb';
+import WasteModel from '../../models/waste';
+import UserModel from '../../models/user';
+import { APIError } from '../../types/api_error';
+import { APIResponse } from '../../types/api_response';
+import { generalizePhoneNumber } from '../../utils/converters';
+import { philippineNumberRegex } from '../../utils/validators';
+import WasteTransactionModel from '../../models/waste_transaction';
+import item_points from '../../models/item_points';
 
 type WasteData = {
   batteries: number;
@@ -20,9 +21,9 @@ const wasteHandler = (
   res: NextApiResponse<APIResponse>
 ) => {
   switch (req.method) {
-    case "GET":
+    case 'GET':
       return getWastes(req, res);
-    case "POST":
+    case 'POST':
       return createWaste(req, res);
   }
 };
@@ -45,7 +46,7 @@ const createWaste = async (
       if (!philippineNumberRegex.test(phoneNumber)) {
         res.status(400).json({
           error: {
-            message: "Invalid Phone Number",
+            message: 'Invalid Phone Number',
             statusCode: 400,
           },
         });
@@ -55,14 +56,6 @@ const createWaste = async (
       // Remove the prefixes from the phone number to ensure
       // that there are no number duplication
       const generalizedPhoneNumber = generalizePhoneNumber(phoneNumber);
-
-      const userDocument = await UserModel.findOne({
-        phoneNumber: generalizedPhoneNumber,
-      });
-
-      if (!userDocument) {
-        throw Error("There are no existing user with that number..");
-      }
 
       let wasteDocument = await WasteModel.findOne({
         phoneNumber: generalizedPhoneNumber,
@@ -93,21 +86,38 @@ const createWaste = async (
         phoneNumber: generalizedPhoneNumber,
       });
 
-      // Update the User's points
-      userDocument.points +=
-        wasteDocument.batteries + wasteDocument.chargers + wasteDocument.phones;
+      // Start computing for the total points acquired
+      const itemPoints = await item_points.find().lean();
 
-      await userDocument.save();
+      const providedWastes = Object.keys(req.body).filter(
+        (key) => key !== 'phoneNumber'
+      );
+
+      let acquiredPoints = 0;
+
+      for (const itemPoint of itemPoints) {
+        // Start looping for the provided waste
+        for (const providedWaste of providedWastes) {
+          const amountProvided = Number(req.body[providedWaste]);
+          if (amountProvided > 0 && itemPoint.name === providedWaste) {
+            acquiredPoints += itemPoint.points;
+          }
+        }
+      }
 
       res.status(200).json({
-        data: wasteDocument.toObject(),
+        message: 'Thank you for recycling!',
+        data: {
+          phoneNumber: generalizedPhoneNumber,
+          points: acquiredPoints,
+        },
       });
       return;
     }
 
     res.status(400).json({
       error: {
-        message: "Error creating waste",
+        message: 'Error creating waste',
         statusCode: 400,
       },
     });
@@ -133,7 +143,7 @@ const getWastes = async (
       if (!philippineNumberRegex.test(phoneNumber.toString())) {
         res.status(400).json({
           error: {
-            message: "Invalid Phone Number",
+            message: 'Invalid Phone Number',
             statusCode: 400,
           },
         });

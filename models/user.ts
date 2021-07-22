@@ -1,31 +1,35 @@
-import { Schema, Document, model, models } from "mongoose";
-import bcrypt from "bcrypt";
+import { Schema, Document, model, models, Model } from 'mongoose';
+import bcrypt from 'bcrypt';
 
-export interface IUser extends Document {
+export interface User {
+  username: string;
   password: string;
-  phoneNumber: string;
-  name: string;
-  points: number;
+  accessLevel: number;
 }
 
-const UserSchema: Schema = new Schema<IUser>(
+export interface UserDocument extends User, Document {
+  comparePassword(
+    passwordToCompare: string,
+    callback: (err: any, isMatch: boolean) => void
+  ): boolean;
+}
+export interface UserModel extends Model<UserDocument> {}
+
+const UserSchema: Schema = new Schema<UserDocument, UserModel>(
   {
-    password: {
-      type: String,
-      required: true,
-    },
-    phoneNumber: {
+    username: {
       type: String,
       required: true,
       unique: true,
     },
-    name: {
+    password: {
       type: String,
       required: true,
     },
-    points: {
+    accessLevel: {
       type: Number,
-      default: 0,
+      required: true,
+      default: 5, // Defaults to User access level
     },
   },
   {
@@ -34,22 +38,21 @@ const UserSchema: Schema = new Schema<IUser>(
 );
 
 // Handle password Hashing
-UserSchema.pre("save", function (this: IUser, next) {
-  let user = this;
-
+UserSchema.pre<UserDocument>('save', function (next) {
   // We only need to hash the password if the document
   // has been modified or new
-  if (!user.isModified("password")) return next();
+
+  if (!this.isModified('password')) return next();
 
   // Start salt generation
   bcrypt.genSalt(10, (err, salt) => {
     if (err) return next(err);
 
     // Start hashing the password using the generated salt
-    bcrypt.hash(user.password, salt, (err, hash) => {
+    bcrypt.hash(this.password, salt, (err, hash) => {
       if (err) return next(err);
 
-      user.password = hash;
+      this.password = hash;
 
       return next();
     });
@@ -58,7 +61,7 @@ UserSchema.pre("save", function (this: IUser, next) {
 
 // This method will be used for password comparison in the mongoDB Database
 UserSchema.methods.comparePassword = function (
-  this: IUser,
+  this: UserDocument,
   passwordToCompare,
   callback
 ) {
@@ -68,13 +71,14 @@ UserSchema.methods.comparePassword = function (
   });
 };
 
-UserSchema.post("save", function (error, res, next) {
-  if (error.name === "MongoError" && error.code === 11000) {
+UserSchema.post('save', function (error, res, next) {
+  if (error.name === 'MongoError' && error.code === 11000) {
     console.log(error);
-    next(new Error("A User already registered with that number."));
+    next(new Error('A User already registered with that number.'));
   } else {
     next();
   }
 });
 
-export default models.User || model<IUser>("User", UserSchema);
+export default (models.User as UserModel) ||
+  model<UserDocument, UserModel>('User', UserSchema);

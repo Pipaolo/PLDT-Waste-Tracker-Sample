@@ -21,22 +21,7 @@ export const useLoginStore = create<LoginState>((set) => ({
         username,
         password,
       });
-      console.log(response);
-      // const response = await axios.patch("/api/auth/login", {
-      //   phoneNumber,
-      //   password,
-      // });
 
-      // const responseData = await response.data;
-
-      // if (responseData.error) {
-      //   set({
-      //     isLoading: false,
-      //     error: responseData.error.message,
-      //     success: null,
-      //   });
-      //   return;
-      // }
       set({
         isLoading: false,
         error: null,

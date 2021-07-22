@@ -23,7 +23,7 @@ type LoginInput = {
 const LoginPage = ({ csrfToken }: IProps) => {
   const router = useRouter();
   const loginState = useLoginStore();
-  const [session] = useSession();
+  const [session,loading] = useSession();
 
   const {
     register,
@@ -38,24 +38,11 @@ const LoginPage = ({ csrfToken }: IProps) => {
   };
 
   useEffect(() => {
-    if (loginState.error) {
-      toast(loginState.error, {
-        autoClose: 2000,
-        bodyClassName: "text-red-500",
-        hideProgressBar: true,
-        position: "bottom-center",
-      });
 
-      return;
-    }
-
-    if (loginState.success) {
-      router.push(`/users/${loginState.success["_id"]}`);
-    }
   }, [loginState, router]);
 
   const buildLoading = () => {
-    if (loginState.isLoading || !session) {
+    if (loading) {
       return (
         <div className="flex justify-center w-full">
           <Loader type="TailSpin" color="#E72D2F" height={40} width={40} />
@@ -64,7 +51,7 @@ const LoginPage = ({ csrfToken }: IProps) => {
     }
     return (
       <div className="flex flex-col w-full">
-        <OutlineButton classNames="mt-4" onClick={() => handleSubmit(onSubmit)}>
+        <OutlineButton className="mt-4" onClick={() => handleSubmit(onSubmit)}>
           <span className="text-center">Login</span>
         </OutlineButton>
       </div>
