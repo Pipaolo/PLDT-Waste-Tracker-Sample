@@ -12,7 +12,7 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       credentials: {
-        username: { 
+        username: {
           type: 'text',
         },
         password: {
@@ -60,6 +60,7 @@ export default NextAuth({
         token.accessToken = account.accessToken;
         token.refreshToken = account.refreshToken;
       }
+      console.log(token, user, account);
       return token;
     },
     session: async (session, userOrToken) => {

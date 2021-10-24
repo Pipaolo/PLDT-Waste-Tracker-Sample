@@ -8,7 +8,7 @@ import { APIResponse } from '../../types/api_response';
 import { hostname } from '../../config';
 import { WasteTransactionStats } from '../../types/waste_transaction_stats';
 import { ResponsivePie } from '@nivo/pie';
-import { getSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import { getToken } from 'next-auth/jwt';
 import { NextApiRequest } from 'next-auth/internals/utils';
 import AdminAppbar from '../../components/admin/AdminAppbar';
@@ -23,6 +23,8 @@ interface IProps {
 }
 
 const AdminPage = (props: IProps) => {
+  const session = useSession();
+  console.log(session);
   const renderTransactionsStats = () => {
     return (
       <div className="flex flex-col items-center w-full h-full gap-4 p-8 bg-white border-2 border-gray-200 rounded-lg md:gap-0 md:grid md:grid-cols-2 md:h-72">
@@ -105,7 +107,7 @@ const AdminPage = (props: IProps) => {
       <Head>
         <title>Admin Panel</title>
       </Head>
-      <AdminAppbar/>
+      <AdminAppbar />
       <NavigationBar className="h-full p-4"></NavigationBar>
       <Container className="w-full md:p-4">
         <Container className="flex flex-col w-full bg-white rounded-lg ">
@@ -128,23 +130,26 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
   context
 ) => {
   try {
-    
     const dailyTransactionsResponse = await axios.get<APIResponse>(
       `${hostname}/api/admin/statistics/transactions?sortBy=DAILY`,
       {
-        headers: context.req.headers
+        headers: context.req.headers,
       }
     );
     const allTransactionsResponse = await axios.get<APIResponse>(
       `${hostname}/api/admin/statistics/transactions`,
       {
-        headers: context.req.headers
+        headers: context.req.headers,
       }
     );
-      
+
     // Convert the responses into the chart readable format
-    const dailyTransactionsData = (dailyTransactionsResponse.data) ? dailyTransactionsResponse.data.data : {};
-    const allTransactionsData = (allTransactionsResponse.data) ? allTransactionsResponse.data.data : {};
+    const dailyTransactionsData = dailyTransactionsResponse.data
+      ? dailyTransactionsResponse.data.data
+      : {};
+    const allTransactionsData = allTransactionsResponse.data
+      ? allTransactionsResponse.data.data
+      : {};
     const allTransactionsChartData = Object.keys(allTransactionsData).map(
       (key) => ({
         id: key,
@@ -173,7 +178,7 @@ export const getServerSideProps: GetServerSideProps<IProps> = async (
       props: {
         transactions: {
           daily: [],
-          overall:  [],
+          overall: [],
         },
       },
     };

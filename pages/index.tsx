@@ -1,10 +1,10 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { MainButton, Logo } from "../shared_components";
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { MainButton, Logo } from '../shared_components';
 export default function Home() {
   const router = useRouter();
   const handleOnGetStartedPressed = () => {
-    router.push("/register");
+    router.push('/register');
   };
 
   return (
@@ -17,7 +17,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center h-full">
             <div className="w-full">
               <Logo
-                onClick={() => router.push("/")}
+                onClick={() => router.push('/')}
                 className="object-contain"
               />
             </div>
@@ -28,13 +28,16 @@ export default function Home() {
               Keep track of your points at the comfort of your home
             </div>
             <div className="flex flex-col items-center justify-center mt-12 space-y-2">
-              <MainButton onClick={handleOnGetStartedPressed}>
+              {/* <MainButton
+                className="bg-red-500"
+                onClick={handleOnGetStartedPressed}
+              >
                 <span className="font-bold text-white">Get Started</span>
-              </MainButton>
+              </MainButton> */}
               <div className="text-center">
                 <span className="text-sm">Already have an account? </span>
                 <a
-                  href="/login"
+                  href="/auth/login"
                   className="text-sm text-blue-500 transition duration-300 hover:underline"
                 >
                   Click Here to Sign in

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { useOnClickOutside } from '../../hooks/useClickOutside';
 import { Logo } from '../../shared_components';
 import { useDrawerStore } from '../../stores/drawerStore';
@@ -15,6 +15,7 @@ interface IProps {
 interface IRoute {
   route: string;
   name: string;
+  icon?: ReactNode;
 }
 
 const routes: Array<IRoute> = [
@@ -30,6 +31,10 @@ const routes: Array<IRoute> = [
     name: 'Points Manager',
     route: '/admin/pointsManager',
   },
+  {
+    name: 'Settings',
+    route: '/admin/settings',
+  },
 ];
 
 export const NavigationBar = (props: IProps) => {
@@ -39,21 +44,16 @@ export const NavigationBar = (props: IProps) => {
 
   const renderSampleNavigationItems = () => {
     return routes.map((r) => (
-      <NavigationItem
-        key={r.name}
-        name={r.name}
-        route={r.route}
-      ></NavigationItem>
+      <NavigationItem key={r.name} name={r.name} route={r.route} />
     ));
   };
 
   useOnClickOutside(ref, () => {
     if (drawerState.isOpen) {
-      drawerState.closeDrawer()
+      drawerState.closeDrawer();
       return;
     }
-  }) 
-
+  });
 
   return (
     <div
