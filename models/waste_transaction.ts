@@ -6,6 +6,7 @@ export interface WasteTransaction {
   phones: number;
   chargers: number;
   phoneNumber: string;
+  points: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
@@ -29,6 +30,10 @@ const WasteTransaction: Schema = new Schema<
       default: 0,
     },
     chargers: {
+      type: Number,
+      default: 0,
+    },
+    points: {
       type: Number,
       default: 0,
     },
