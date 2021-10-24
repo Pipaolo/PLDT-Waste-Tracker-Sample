@@ -12,7 +12,7 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       credentials: {
-        username: {
+        username: { 
           type: 'text',
         },
         password: {
