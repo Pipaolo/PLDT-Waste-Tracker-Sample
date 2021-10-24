@@ -46,6 +46,10 @@ const AdminTransactionsPage = (props: IProps) => {
         accessor: 'chargers',
       },
       {
+        Header: 'Points',
+        accessor: 'points',
+      },
+      {
         Header: 'Date',
         accessor: 'createdAt',
       },
@@ -67,33 +71,34 @@ const AdminTransactionsPage = (props: IProps) => {
         </div>
       );
     }
-    
 
-    return  <table className="table" {...getTableProps()}>
-    <thead>
-      {headerGroups.map((headerGroup) => (
-        <tr {...headerGroup.getHeaderGroupProps()}>
-          {headerGroup.headers.map((col) => (
-            <th {...col.getHeaderProps()}>{col.render('Header')}</th>
+    return (
+      <table className="table" {...getTableProps()}>
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((col) => (
+                <th {...col.getHeaderProps()}>{col.render('Header')}</th>
+              ))}
+            </tr>
           ))}
-        </tr>
-      ))}
-    </thead>
-    <tbody {...getTableBodyProps()}>
-      {rows.map((row) => {
-        prepareRow(row);
-        return (
-          <tr {...row.getRowProps()}>
-            {row.cells.map((cell) => {
-              return (
-                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-              );
-            })}
-          </tr>
-        );
-      })}
-    </tbody>
-  </table>
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
   };
 
   return (
@@ -103,8 +108,8 @@ const AdminTransactionsPage = (props: IProps) => {
       </Head>
       <AdminAppbar />
       <NavigationBar className="h-full p-4"></NavigationBar>
-      <Container className="w-full p-4">
-        <Container className="flex flex-col w-full bg-white rounded-lg ">
+      <Container className="w-full h-full p-4 overflow-y-auto">
+        <Container className="flex flex-col w-full bg-white rounded-lg">
           <AdminHeader title="Transactions"></AdminHeader>
           {renderLoading()}
         </Container>
